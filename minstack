@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int val;
+    int min;
+    struct MinStack* next;
+} MinStack;
+
+MinStack* minStackCreate() {
+    MinStack* stack = (MinStack*)malloc(sizeof(MinStack));
+    stack->next = NULL;
+    return stack;
+}
+
+void minStackPush(MinStack* obj, int val) {
+    MinStack* new_node = (MinStack*)malloc(sizeof(MinStack));
+    new_node->val = val;
+    new_node->min = (obj->next == NULL || val < obj->next->min) ? val : obj->next->min;
+    new_node->next = obj->next;
+    obj->next = new_node;
+}
+
+void minStackPop(MinStack* obj) {
+    MinStack* temp = obj->next;
+    obj->next = obj->next->next;
+    free(temp);
+}
+
+int minStackTop(MinStack* obj) {
+    return obj->next->val;
+}
+
+int minStackGetMin(MinStack* obj) {
+    return obj->next->min;
+}
+
+int main() {
+    MinStack* minStack = minStackCreate();
+    minStackPush(minStack, -2);
+    minStackPush(minStack, 0);
+    minStackPush(minStack, -3);
+    printf("%d\n", minStackGetMin(minStack)); // Output: -3
+    minStackPop(minStack);
+    printf("%d\n", minStackTop(minStack));    // Output: 0
+    printf("%d\n", minStackGetMin(minStack)); // Output: -2
+    return 0;
+}
