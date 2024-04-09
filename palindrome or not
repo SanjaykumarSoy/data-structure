@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+struct ListNode {
+    int val;
+    struct ListNode* next;
+};
+
+bool isPalindrome(struct ListNode* head) {
+    struct ListNode *slow = head, *fast = head;
+    
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    
+    struct ListNode* prev = NULL;
+    while (slow) {
+        struct ListNode* temp = slow->next;
+        slow->next = prev;
+        prev = slow;
+        slow = temp;
+    }
+    
+    while (prev) {
+        if (head->val != prev->val) {
+            return false;
+        }
+        head = head->next;
+        prev = prev->next;
+    }
+    
+    return true;
+}
+
+// Function to create a new node
+struct ListNode* newNode(int val) {
+    struct ListNode* node = (struct ListNode*)malloc(sizeof(struct ListNode));
+    node->val = val;
+    node->next = NULL;
+    return node;
+}
+
+int main() {
+    struct ListNode* head = newNode(1);
+    head->next = newNode(2);
+    head->next->next = newNode(2);
+    head->next->next->next = newNode(1);
+
+    if (isPalindrome(head)) {
+        printf("Output: True\n");
+    } else {
+        printf("Output: False\n");
+    }
+
+    return 0;
+}
