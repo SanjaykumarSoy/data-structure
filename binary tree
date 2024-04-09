@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+};
+
+struct TreeNode* buildTree(int* preorder, int preorderSize, int* inorder, int inorderSize) {
+    if (preorderSize == 0 || inorderSize == 0) {
+        return NULL;
+    }
+    
+    struct TreeNode* root = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    root->val = preorder[0];
+    
+    int i;
+    for (i = 0; i < inorderSize; i++) {
+        if (inorder[i] == preorder[0]) {
+            break;
+        }
+    }
+    
+    root->left = buildTree(preorder + 1, i, inorder, i);
+    root->right = buildTree(preorder + i + 1, preorderSize - i - 1, inorder + i + 1, inorderSize - i - 1);
+    
+    return root;
+}
+
+void inorderTraversal(struct TreeNode* root) {
+    if (root == NULL) {
+        return;
+    }
+    inorderTraversal(root->left);
+    printf("%d ", root->val);
+    inorderTraversal(root->right);
+}
+
+int main() {
+    int preorder[] = {3, 9, 20, 15, 7};
+    int inorder[] = {9, 3, 15, 20, 7};
+    int preorderSize = sizeof(preorder) / sizeof(preorder[0]);
+    int inorderSize = sizeof(inorder) / sizeof(inorder[0]);
+    
+    struct TreeNode* root = buildTree(preorder, preorderSize, inorder, inorderSize);
+    printf("Inorder traversal of the constructed binary tree: ");
+    inorderTraversal(root);
+    printf("\n");
+    
+    return 0;
+}
