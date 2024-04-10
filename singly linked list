@@ -1,0 +1,31 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+  int data;
+  struct node* next;
+};
+void push (struct node** headref, int newdata){
+  struct node* newnode= (struct node*)malloc (sizeof(struct node));
+  newnode ->data = newdata;
+  newnode -> next = (*headref);
+  (*headref)=newnode;
+}
+int get(struct node* head){
+  int count =0;
+  struct node*current= head;
+  while(current!= NULL){
+    count++;
+    current =current -> next;
+  }
+  return count;
+}
+int main(){
+  struct node*head = NULL;
+  push(&head, 1);
+   push(&head, 2);
+   push(&head, 3);
+   push(&head, 5);
+   push(&head, 8);
+  printf("count of node is %d", get(head));
+  return 0;
+}
