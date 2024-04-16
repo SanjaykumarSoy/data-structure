@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+int main() {
+    int N = 5; 
+    int M = 4; 
+    int u = 1; 
+    int v = 5; 
+
+   
+    int edges[4][2] = {{1, 2}, {2, 3}, {3, 4}, {2, 5}};
+
+    
+    int min_edges = 0;
+    for (int i = 0; i < M; i++) {
+        if ((edges[i][0] == u && edges[i][1] == v) || (edges[i][0] == v && edges[i][1] == u)) {
+            min_edges = 1;
+            break;
+        }
+    }
+
+    if (min_edges == 0) {
+        printf("No path found between %d and %d\n", u, v);
+    } else {
+        printf("Minimum number of edges between %d and %d: %d\n", u, v, min_edges);
+    }
+
+    return 0;
+}
